@@ -1,7 +1,9 @@
+attrs>=16.0,<17.0
 pip==8.1.2
 bumpversion==0.5.3
 wheel==0.29.0
 watchdog==0.8.3
+functools32>= 3.2.3,<4.0; python_version<'3.0'
 flake8==3.0.4
 tox==2.3.1
 coverage==4.2

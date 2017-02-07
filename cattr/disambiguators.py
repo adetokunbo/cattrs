@@ -1,19 +1,21 @@
 """Utilities for union (sum type) disambiguation."""
 from functools import reduce
 from operator import or_
-from typing import Callable, Mapping, Sequence, Type, Union
 
-from attr import fields, NOTHING
+from attr import NOTHING, fields
+from typing import Callable, Mapping, Sequence, Union
 
 
-def create_uniq_field_dis_func(*cls: Sequence[Type]) -> Callable:
+def create_uniq_field_dis_func(*cls):
     """Given attr classes, generate a disambiguation function.
 
     The function is based on unique required fields."""
     if len(cls) < 2:
         raise ValueError('At least two classes required.')
-    req_attrs = [set(at.name for at in fields(cl) if at.default is NOTHING)
-                 for cl in cls]
+    req_attrs = [
+        set(at.name for at in fields(cl) if at.default is NOTHING)
+        for cl in cls
+    ]
     if len([attr_set for attr_set in req_attrs if len(attr_set) == 0]) > 1:
         raise ValueError('At least two classes have no required attributes.')
     # TODO: Deal with a single class having no required attrs.
@@ -27,7 +29,7 @@ def create_uniq_field_dis_func(*cls: Sequence[Type]) -> Callable:
             raise ValueError('{} has no usable unique attributes.'.format(cl))
         uniq_attrs_dict[next(iter(uniq))] = cl
 
-    def dis_func(data: Mapping) -> Union:
+    def dis_func(data):
         for k, v in uniq_attrs_dict.items():
             if k in data:
                 return v

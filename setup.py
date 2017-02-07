@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import sys
+
 from setuptools import setup
 
 with open('README.rst') as readme_file:
@@ -11,11 +13,15 @@ with open('HISTORY.rst') as history_file:
 
 requirements = [
     "attrs >= 16.0",
-    "typing >= 3.5.2; python_version<'3.5'",
     "singledispatch >= 3.4.0.3; python_version<'3.4'",
+    "typing >= 3.5.2; python_version<'3.5'",
 ]
+if sys.version_info < (3, 0):
+    requirements.append("functools32 >= 3.2.3; python_version<'3.0'")
 
 test_requirements = [
+    "pytest>=3.0.3,<3.1", "hypothesis>=3.5.2,<4.0"
+
     # TODO: put package test requirements here
 ]
 
@@ -27,11 +33,8 @@ setup(
     author="Tin Tvrtković",
     author_email='tinchester@gmail.com',
     url='https://github.com/Tinche/cattrs',
-    packages=[
-        'cattr',
-    ],
-    package_dir={'cattr':
-                 'cattr'},
+    packages=['cattr', ],
+    package_dir={'cattr': 'cattr'},
     include_package_data=True,
     install_requires=requirements,
     license="MIT license",
@@ -48,5 +51,4 @@ setup(
         'Programming Language :: Python :: 3.5',
     ],
     test_suite='tests',
-    tests_require=test_requirements
-)
+    tests_require=test_requirements)

@@ -1,0 +1,3 @@
+from typing import Callable, Sequence, Type
+
+def create_uniq_field_dis_func(*cls: Sequence[Type]) -> Callable: ...
